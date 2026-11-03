@@ -3,16 +3,18 @@
 set -eu
 
 ARCH=$(uname -m)
-VERSION=$(pacman -Q PACKAGENAME | awk '{print $2; exit}') # example command to get version of application here
-export ARCH VERSION
+export ARCH
 export OUTPATH=./dist
 export ADD_HOOKS="self-updater.hook"
 export UPINFO="gh-releases-zsync|${GITHUB_REPOSITORY%/*}|${GITHUB_REPOSITORY#*/}|latest|*$ARCH.AppImage.zsync"
-export ICON=PATH_OR_URL_TO_ICON
-export DESKTOP=PATH_OR_URL_TO_DESKTOP_ENTRY
+export ICON=/usr/share/icons/hicolor/scalable/apps/com.strlen.TreeSheets.svg
+export DESKTOP=/usr/share/applications/com.strlen.TreeSheets.desktop
 
 # Deploy dependencies
-quick-sharun /PATH/TO/BINARY_AND_LIBRARIES_HERE
+quick-sharun \
+	/usr/bin/TreeSheets   \
+	/usr/share/TreeSheets \
+	/usr/share/doc/TreeSheets # is this one needed?
 
 # Additional changes can be done in between here
 
