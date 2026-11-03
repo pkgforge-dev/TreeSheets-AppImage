@@ -39,13 +39,12 @@ git clone https://github.com/aardappel/treesheets.git ./treesheets && (
 	git checkout "$TAG"
 
 	cmake \
-		-B ./build                            \
-		-G Ninja                              \
-		-W no-author                          \
-		-D CMAKE_BUILD_TYPE=Release           \
-		-D CMAKE_INSTALL_PREFIX=/usr          \
-		-D TREESHEETS_BUNDLE_WXWIDGETS=ON     \
-		-D FETCHCONTENT_FULLY_DISCONNECTED=ON \
+		-B ./build                        \
+		-G Ninja                          \
+		-W no-author                      \
+		-D CMAKE_BUILD_TYPE=Release       \
+		-D CMAKE_INSTALL_PREFIX=/usr      \
+		-D TREESHEETS_BUNDLE_WXWIDGETS=ON \
 		-D TREESHEETS_VERSION="$TAG"
 
 	cmake --build ./build
