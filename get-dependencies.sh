@@ -6,7 +6,23 @@ ARCH=$(uname -m)
 
 echo "Installing package dependencies..."
 echo "---------------------------------------------------------------"
-# pacman -Syu --noconfirm PACKAGESHERE
+pacman -Syu --noconfirm \
+	cairo         \
+	cmake         \
+	expat         \
+	gspell        \
+	libjpeg-turbo \
+	libnotify     \
+	libpng        \
+	libtiff       \ 
+	libwebp       \
+	libx11        \
+	libxkbcommon  \
+	ninja         \
+	pango         \
+	pcre2         \
+	sdl2          \
+	zlib
 
 echo "Installing debloated packages..."
 echo "---------------------------------------------------------------"
@@ -16,14 +32,24 @@ get-debloated-pkgs --add-common --prefer-nano
 #make-aur-package PACKAGENAME
 
 # If the application needs to be manually built that has to be done down here
+git clone https://github.com/aardappel/treesheets.git ./treesheets && (
+	cd ./treesheets
+	git fetch --tags origin
+	TAG=$(git tag --sort=-v:refname | grep -vi 'rc\|alpha\|beta' | head -1)
+	git checkout "$TAG"
 
-# if you also have to make nightly releases check for DEVEL_RELEASE = 1
-#
-# if [ "${DEVEL_RELEASE-}" = 1 ]; then
-# 	nightly build steps
-# else
-# 	regular build steps
-# fi
+	cmake \
+		-B ./build                            \
+		-G Ninja                              \
+		-W no-author                          \
+		-D CMAKE_BUILD_TYPE=Release           \
+		-D CMAKE_INSTALL_PREFIX=/usr          \
+		-D TREESHEETS_BUNDLE_WXWIDGETS=ON     \
+		-D FETCHCONTENT_FULLY_DISCONNECTED=ON \
+		-D TREESHEETS_VERSION="$TAG"
 
-# Note that when building manually, you want to output the version of the
-# application to a ~/version file and remove VERSION from make-appimage.sh
+	cmake --build ./build
+	cmake --install ./build
+
+	echo "$TAG" > ~/version
+)
