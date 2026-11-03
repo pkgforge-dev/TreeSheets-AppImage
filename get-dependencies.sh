@@ -14,7 +14,7 @@ pacman -Syu --noconfirm \
 	libjpeg-turbo \
 	libnotify     \
 	libpng        \
-	libtiff       \ 
+	libtiff       \
 	libwebp       \
 	libx11        \
 	libxkbcommon  \
